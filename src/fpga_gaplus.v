@@ -3,7 +3,7 @@
 
 						Copyright (c) 2007,2019 MiSTer-X
 **********************************************************/
-module FPGA_GAPLUS
+module fpga_gaplus
 (
 	input				RESET,	// RESET
 	input				MCLK,		// MasterClock: 49.125MHz
