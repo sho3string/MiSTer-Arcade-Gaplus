@@ -233,13 +233,22 @@ input  [5:0]	ADRSr;
 output [28:0]	Dr0;
 output [23:0]	Dr1;
 
-BUF64_53 mem (
-	{Dw1,Dw0},ADRSr,CLKr,
-	ADRSw,CLKw,we,{Dr1,Dr0}
+dualport_2clk_ram #(.ADDR_WIDTH(6),.DATA_WIDTH(64)) mem(
+	.clock_a(CLKw),
+	.address_a(ADRSw),
+	.data_a({Dw1,Dw0}),
+	.wren_a(we),
+	.q_a(),
+	
+	.clock_b(CLKr),
+	.address_b(ADRSr),
+	.data_b({64{1'b1}}),
+	.wren_b(1'b0),
+	.q_b({Dr1,Dr0})
 );
 
-endmodule
 
+endmodule
 
 //----------------------------------------
 //  Line Double Buffer
@@ -280,15 +289,20 @@ output	[8:0]	OUT;
 
 wire [8:0] dum;
 
-LBUF512_9 mem (
-	ADRSR,ADRSW,
-	CLKR,CLKW,
-	9'h0,IN,
-	REN,1'b0,
-	1'b0,WEN,
-	OUT,dum
+dualport_2clk_ram #(.ADDR_WIDTH(9),.DATA_WIDTH(9)) mem(
+	.clock_a(CLKR),
+	.address_a(ADRSR),
+	.data_a(9'h0),
+	.wren_a(1'b0),
+	.q_a(OUT),
+	
+	.clock_b(CLKW),
+	.address_b(ADRSW),
+	.data_b(IN),
+	.wren_b(WEN),
+	.q_b(dum)
 );
 
-
 endmodule
+
 
